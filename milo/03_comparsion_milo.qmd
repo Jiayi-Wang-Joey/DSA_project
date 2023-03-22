@@ -1,0 +1,212 @@
+---
+title: "04_milo"
+format: html
+editor: visual
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+setwd("~/Desktop/muscat/code/")
+knitr::knit_child("00_data.qmd")
+```
+
+## Loading packages
+
+```{r setup, warning=FALSE}
+library(miloR)
+library(SingleCellExperiment)
+library(scater)
+library(dplyr)
+library(patchwork)
+library(ggbeeswarm)
+library(ggplot2)
+library(stringr)
+library(tidyr)
+```
+
+## Clustering by type
+
+Function to run PCA.
+
+We run PCA using three different features: type, state and all, and used distances from PCA to construct K-NN graph.
+
+```{r}
+myfeature <- list("type", "state", NULL)
+run.PCA <- function(feature) {
+  sce <- cluster(sce, features = feature, 
+    xdim = 10, ydim = 10, maxK = 20, seed = 1234)
+  sce <- runDR(sce, "PCA", features = feature)
+}
+
+sce.list <- lapply(myfeature, run.PCA)
+```
+
+## DA analysis
+
+Preparing required variables
+
+```{r}
+merging_table1 <- "PBMC8_cluster_merging1.xlsx"
+download.file(file.path(url, merging_table1), 
+    destfile = merging_table1, mode = "wb")
+merging_table1 <- read_excel(merging_table1)
+head(data.frame(merging_table1))
+merging_table1$new_cluster <- factor(merging_table1$new_cluster, 
+    levels = c("B-cells IgM+", "B-cells IgM-", "CD4 T-cells",
+        "CD8 T-cells", "DC", "NK cells", "monocytes", "surface-"))
+
+ei <- metadata(sce)$experiment_info
+(da_formula1 <- createFormula(ei, 
+    cols_fixed = "condition", 
+    cols_random = "sample_id"))
+
+(da_formula2 <- createFormula(ei, 
+    cols_fixed = "condition", 
+    cols_random = c("sample_id", "patient_id")))
+
+contrast <- createContrast(c(0, 1))
+group <- factor(ei(sce)$condition)
+design <- model.matrix(~ group)
+colnames(design) <- levels(group)
+
+```
+
+Run DA analysis function using three features
+
+```{r}
+sce.list <- lapply(sce.list, mergeClusters, k = "meta20", 
+    table = merging_table1, id = "merging1", overwrite = TRUE)
+
+run.DA <- function(sce, cluster_id){
+  
+  da_res <- diffcyt(sce, 
+    formula = da_formula1, contrast = contrast, design = design,
+    analysis_type = "DA", method_DA = "diffcyt-DA-edgeR",
+    clustering_to_use = cluster_id, verbose = FALSE)
+  
+}
+
+diffcyt.da_res <- lapply(sce.list, run.DA, cluster_id = "meta10")
+
+```
+
+## Milo
+
+Preparing traj_design
+
+```{r}
+
+prepare.traj_design <- function(traj_milo){
+  traj_design <- data.frame(colData(traj_milo))[,c("sample_id", "condition")]
+  traj_design <- distinct(traj_design)
+  traj_design$sample_id <- colnames(nhoodCounts(traj_milo))
+  traj_design$condition <- str_sub(traj_design$sample_id, 1, str_length(traj_design$sample_id)-1)
+  rownames(traj_design) <- traj_design$sample_id
+  return(traj_design)
+}
+
+```
+
+Run milo
+
+```{r}
+run.Milo <- function(sce){
+  traj_milo <- Milo(sce)
+  reducedDim(traj_milo, "PCA") <- reducedDim(sce, "PCA")
+  # Defining representative neighbourhoods
+  traj_milo <- buildGraph(traj_milo, d = 9)
+  traj_milo <- makeNhoods(traj_milo, d = 9)
+  # Counting cells in neighbourhoods
+  traj_milo <- countCells(traj_milo, meta.data = colData(traj_milo), sample="sample_id")
+  traj_milo <- calcNhoodDistance(traj_milo, d=9)
+}
+traj_milo.list <- lapply(sce.list, run.Milo)
+
+annotate.Cluster_id <- function(traj_milo, sce){
+   traj_design <- prepare.traj_design(traj_milo)
+   da_res <- testNhoods(traj_milo, design = ~ condition, design.df = traj_design)
+   colData(traj_milo)$meta10 <- cluster_ids(sce, "meta10")
+   da_res <- annotateNhoods(traj_milo, da.res = da_res, coldata_col = "meta10")
+   return(da_res)
+}
+
+milo.da_res <- list()
+for(i in 1:3){
+  milo.da_res[[i]] <- annotate.Cluster_id(traj_milo.list[[i]], sce.list[[i]])
+}
+```
+
+Comparison by logFC using mean
+
+```{r}
+  
+plot.logFC <- function(milo.da_res, diffcyt.da_res){
+  milo.da_res$color <- "grey"
+  milo.da_res[milo.da_res$logFC > 1, ]$color <- "#F76D5E"
+  milo.da_res[milo.da_res$logFC < -1, ]$color <- "#3FA0FF"
+  diffcyt.da_res$meta10 <- diffcyt.da_res$cluster_id
+  ggplot(milo.da_res, aes(x=meta10, y = logFC, color=milo.da_res$color)) + geom_quasirandom(alpha=.3,varwidth=TRUE) +  stat_summary(fun.y=mean, geom="point", shape=8, size=3, color="black") + geom_point(data=data.frame(diffcyt.da_res), mapping = aes(x=meta10, y=logFC), pch=16, color="black") + scale_colour_identity() + geom_hline(yintercept=1,linetype=2) + geom_hline(yintercept= -1,linetype=2)
+}
+#+ geom_point(data=data.frame(diffcyt.da_res), mapping = aes(x=merging1, y=logFC))
+
+p1 <- plot.logFC(milo.da_res[[1]], rowData(diffcyt.da_res[[1]]$res))
+p2 <- plot.logFC(milo.da_res[[2]], rowData(diffcyt.da_res[[2]]$res))
+p3 <- plot.logFC(milo.da_res[[3]], rowData(diffcyt.da_res[[3]]$res))
+p1
+p2
+p3
+
+
+```
+
+Comparison by P-value
+
+```{r}
+
+plot.PValue <- function(milo.da_res, diffcyt.da_res){
+  diffcyt.da_res$meta10 <- diffcyt.da_res$cluster_id
+  milo.da_res$logPValue <- -log(milo.da_res$PValue)
+  diffcyt.da_res$logPValue <- -log(diffcyt.da_res$p_adj)
+  p<-ggplot(milo.da_res, aes(x=meta10, y=logPValue, color=meta10)) +
+  geom_violin(trim=FALSE) + stat_summary(fun.y=mean, geom="point", shape=23, size=2) + geom_point(data=data.frame(diffcyt.da_res), mapping = aes(x=meta10, y=logPValue))
+}
+
+p1 <- plot.PValue(milo.da_res[[1]], rowData(diffcyt.da_res[[1]]$res))
+p2 <- plot.PValue(milo.da_res[[2]], rowData(diffcyt.da_res[[2]]$res))
+p3 <- plot.PValue(milo.da_res[[3]], rowData(diffcyt.da_res[[3]]$res))
+p1
+p2
+p3
+
+```
+
+Plot p-value distribution
+
+```{r}
+# Using Small multiple
+
+plot.PValue_dist <- function(milo.da_res, diffcyt.da_res){
+  milo.da_res$logPValue <- -log(milo.da_res$PValue)
+  da_res <- data.frame(diffcyt.da_res)
+  da_res$logPValue <- -log(da_res$p_adj)
+  da_res$meta10 <- da_res$cluster_id
+  p <- ggplot(data=milo.da_res, aes(x=logPValue, group=meta10, fill=meta10)) +
+      geom_density(adjust=1.5) +
+      facet_wrap(~meta10) +
+      geom_vline(data = da_res, mapping = aes(xintercept = logPValue, group=meta10), linetype="dashed") + geom_vline(xintercept = -log(0.05), linetype="dashed", color = "blue") +
+    theme(
+        legend.position="none",
+        panel.spacing = unit(0.1, "lines"),
+        axis.ticks.x=element_blank() 
+      ) 
+    
+}
+
+p1 <- plot.PValue_dist(milo.da_res[[1]], rowData(diffcyt.da_res[[1]]$res))
+p2 <- plot.PValue_dist(milo.da_res[[2]], rowData(diffcyt.da_res[[2]]$res))
+p3 <- plot.PValue_dist(milo.da_res[[3]], rowData(diffcyt.da_res[[3]]$res))
+p1
+p2
+p3
+
+```

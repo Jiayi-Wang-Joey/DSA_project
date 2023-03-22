@@ -1,0 +1,25 @@
+project: 
+  type: website
+  execute-dir: file
+  output-dir: ./output
+
+execute: 
+  cache: true
+
+format:
+  html:
+    theme: lux
+    toc: true
+    toc-depth: 2
+    standalone: false
+    embed-resources: false
+    
+website:
+  navbar:
+    search: false
+    left:
+      - file: 00_data.qmd
+      - file: 01_clustering.qmd
+      - file: 02_differential_analysis.qmd
+      - file: 03_comparsion_milo.qmd
+      

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>04_milo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./00_data.html">
+ <span class="menu-text">00_Data</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="./01_clustering.qmd">
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="./02_differential_analysis.qmd">
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./03_comparsion_milo.html" aria-current="page">
+ <span class="menu-text">04_milo</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#loading-packages" id="toc-loading-packages" class="nav-link active" data-scroll-target="#loading-packages">Loading packages</a></li>
+  <li><a href="#clustering-by-type" id="toc-clustering-by-type" class="nav-link" data-scroll-target="#clustering-by-type">Clustering by type</a></li>
+  <li><a href="#da-analysis" id="toc-da-analysis" class="nav-link" data-scroll-target="#da-analysis">DA analysis</a></li>
+  <li><a href="#milo" id="toc-milo" class="nav-link" data-scroll-target="#milo">Milo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">04_milo</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="loading-packages" class="level2">
+<h2 class="anchored" data-anchor-id="loading-packages">Loading packages</h2>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/setup_61202a10eb2b6e463973ccca4a10d7fe">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(miloR)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SingleCellExperiment)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scater)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggbeeswarm)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="clustering-by-type" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-by-type">Clustering by type</h2>
+<p>Function to run PCA.</p>
+<p>We run PCA using three different features: type, state and all, and used distances from PCA to construct K-NN graph.</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-2_c30c4cc73d4fcdb6871ec759285a6592">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>myfeature <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">"type"</span>, <span class="st">"state"</span>, <span class="cn">NULL</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>run.PCA <span class="ot">&lt;-</span> <span class="cf">function</span>(feature) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  sce <span class="ot">&lt;-</span> <span class="fu">cluster</span>(sce, <span class="at">features =</span> feature, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">xdim =</span> <span class="dv">10</span>, <span class="at">ydim =</span> <span class="dv">10</span>, <span class="at">maxK =</span> <span class="dv">20</span>, <span class="at">seed =</span> <span class="dv">1234</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  sce <span class="ot">&lt;-</span> <span class="fu">runDR</span>(sce, <span class="st">"PCA"</span>, <span class="at">features =</span> feature)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>sce.list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(myfeature, run.PCA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="da-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="da-analysis">DA analysis</h2>
+<p>Preparing required variables</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-3_d1e86cb3b578eab022e1e12ca2f02712">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>merging_table1 <span class="ot">&lt;-</span> <span class="st">"PBMC8_cluster_merging1.xlsx"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(<span class="fu">file.path</span>(url, merging_table1), </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">destfile =</span> merging_table1, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>merging_table1 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(merging_table1)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">data.frame</span>(merging_table1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  original_cluster  new_cluster
+1                1 B-cells IgM+
+2                2     surface-
+3                3     NK cells
+4                4  CD8 T-cells
+5                5 B-cells IgM-
+6                6    monocytes</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>merging_table1<span class="sc">$</span>new_cluster <span class="ot">&lt;-</span> <span class="fu">factor</span>(merging_table1<span class="sc">$</span>new_cluster, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"B-cells IgM+"</span>, <span class="st">"B-cells IgM-"</span>, <span class="st">"CD4 T-cells"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CD8 T-cells"</span>, <span class="st">"DC"</span>, <span class="st">"NK cells"</span>, <span class="st">"monocytes"</span>, <span class="st">"surface-"</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ei <span class="ot">&lt;-</span> <span class="fu">metadata</span>(sce)<span class="sc">$</span>experiment_info</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>(da_formula1 <span class="ot">&lt;-</span> <span class="fu">createFormula</span>(ei, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols_fixed =</span> <span class="st">"condition"</span>, </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols_random =</span> <span class="st">"sample_id"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$formula
+y ~ condition + (1 | sample_id)
+&lt;environment: 0x7f872c0b97e8&gt;
+
+$data
+   condition sample_id
+1      BCRXL    BCRXL1
+2        Ref      Ref1
+3      BCRXL    BCRXL2
+4        Ref      Ref2
+5      BCRXL    BCRXL3
+6        Ref      Ref3
+7      BCRXL    BCRXL4
+8        Ref      Ref4
+9      BCRXL    BCRXL5
+10       Ref      Ref5
+11     BCRXL    BCRXL6
+12       Ref      Ref6
+13     BCRXL    BCRXL7
+14       Ref      Ref7
+15     BCRXL    BCRXL8
+16       Ref      Ref8
+
+$random_terms
+[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(da_formula2 <span class="ot">&lt;-</span> <span class="fu">createFormula</span>(ei, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols_fixed =</span> <span class="st">"condition"</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols_random =</span> <span class="fu">c</span>(<span class="st">"sample_id"</span>, <span class="st">"patient_id"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$formula
+y ~ condition + (1 | sample_id) + (1 | patient_id)
+&lt;environment: 0x7f8724b38908&gt;
+
+$data
+   condition sample_id patient_id
+1      BCRXL    BCRXL1   Patient1
+2        Ref      Ref1   Patient1
+3      BCRXL    BCRXL2   Patient2
+4        Ref      Ref2   Patient2
+5      BCRXL    BCRXL3   Patient3
+6        Ref      Ref3   Patient3
+7      BCRXL    BCRXL4   Patient4
+8        Ref      Ref4   Patient4
+9      BCRXL    BCRXL5   Patient5
+10       Ref      Ref5   Patient5
+11     BCRXL    BCRXL6   Patient6
+12       Ref      Ref6   Patient6
+13     BCRXL    BCRXL7   Patient7
+14       Ref      Ref7   Patient7
+15     BCRXL    BCRXL8   Patient8
+16       Ref      Ref8   Patient8
+
+$random_terms
+[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> <span class="fu">createContrast</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">ei</span>(sce)<span class="sc">$</span>condition)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(<span class="sc">~</span> group)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(design) <span class="ot">&lt;-</span> <span class="fu">levels</span>(group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Run DA analysis function using three features</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-4_5cc98cf92136c1ca4c609a60dcff01c2">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sce.list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(sce.list, mergeClusters, <span class="at">k =</span> <span class="st">"meta20"</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">table =</span> merging_table1, <span class="at">id =</span> <span class="st">"merging1"</span>, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>run.DA <span class="ot">&lt;-</span> <span class="cf">function</span>(sce, cluster_id){</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  da_res <span class="ot">&lt;-</span> <span class="fu">diffcyt</span>(sce, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> da_formula1, <span class="at">contrast =</span> contrast, <span class="at">design =</span> design,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">analysis_type =</span> <span class="st">"DA"</span>, <span class="at">method_DA =</span> <span class="st">"diffcyt-DA-edgeR"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">clustering_to_use =</span> cluster_id, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>diffcyt.da_res <span class="ot">&lt;-</span> <span class="fu">lapply</span>(sce.list, run.DA, <span class="at">cluster_id =</span> <span class="st">"meta10"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="milo" class="level2">
+<h2 class="anchored" data-anchor-id="milo">Milo</h2>
+<p>Preparing traj_design</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-5_ba6356d9fe5b09b654a8a76e9a0d8c30">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>prepare.traj_design <span class="ot">&lt;-</span> <span class="cf">function</span>(traj_milo){</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  traj_design <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">colData</span>(traj_milo))[,<span class="fu">c</span>(<span class="st">"sample_id"</span>, <span class="st">"condition"</span>)]</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  traj_design <span class="ot">&lt;-</span> <span class="fu">distinct</span>(traj_design)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  traj_design<span class="sc">$</span>sample_id <span class="ot">&lt;-</span> <span class="fu">colnames</span>(<span class="fu">nhoodCounts</span>(traj_milo))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  traj_design<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(traj_design<span class="sc">$</span>sample_id, <span class="dv">1</span>, <span class="fu">str_length</span>(traj_design<span class="sc">$</span>sample_id)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(traj_design) <span class="ot">&lt;-</span> traj_design<span class="sc">$</span>sample_id</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(traj_design)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Run milo</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-6_c6155bc8357ed408160afd4629a79467">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>run.Milo <span class="ot">&lt;-</span> <span class="cf">function</span>(sce){</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  traj_milo <span class="ot">&lt;-</span> <span class="fu">Milo</span>(sce)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reducedDim</span>(traj_milo, <span class="st">"PCA"</span>) <span class="ot">&lt;-</span> <span class="fu">reducedDim</span>(sce, <span class="st">"PCA"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Defining representative neighbourhoods</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  traj_milo <span class="ot">&lt;-</span> <span class="fu">buildGraph</span>(traj_milo, <span class="at">d =</span> <span class="dv">9</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  traj_milo <span class="ot">&lt;-</span> <span class="fu">makeNhoods</span>(traj_milo, <span class="at">d =</span> <span class="dv">9</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Counting cells in neighbourhoods</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  traj_milo <span class="ot">&lt;-</span> <span class="fu">countCells</span>(traj_milo, <span class="at">meta.data =</span> <span class="fu">colData</span>(traj_milo), <span class="at">sample=</span><span class="st">"sample_id"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  traj_milo <span class="ot">&lt;-</span> <span class="fu">calcNhoodDistance</span>(traj_milo, <span class="at">d=</span><span class="dv">9</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>traj_milo.list <span class="ot">&lt;-</span> <span class="fu">lapply</span>(sce.list, run.Milo)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>annotate.Cluster_id <span class="ot">&lt;-</span> <span class="cf">function</span>(traj_milo, sce){</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>   traj_design <span class="ot">&lt;-</span> <span class="fu">prepare.traj_design</span>(traj_milo)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>   da_res <span class="ot">&lt;-</span> <span class="fu">testNhoods</span>(traj_milo, <span class="at">design =</span> <span class="sc">~</span> condition, <span class="at">design.df =</span> traj_design)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>   <span class="fu">colData</span>(traj_milo)<span class="sc">$</span>meta10 <span class="ot">&lt;-</span> <span class="fu">cluster_ids</span>(sce, <span class="st">"meta10"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>   da_res <span class="ot">&lt;-</span> <span class="fu">annotateNhoods</span>(traj_milo, <span class="at">da.res =</span> da_res, <span class="at">coldata_col =</span> <span class="st">"meta10"</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>   <span class="fu">return</span>(da_res)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>milo.da_res <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  milo.da_res[[i]] <span class="ot">&lt;-</span> <span class="fu">annotate.Cluster_id</span>(traj_milo.list[[i]], sce.list[[i]])</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Comparison by logFC using mean</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-7_070cd2c2485585969b74c01e37fe9377">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>plot.logFC <span class="ot">&lt;-</span> <span class="cf">function</span>(milo.da_res, diffcyt.da_res){</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  milo.da_res<span class="sc">$</span>color <span class="ot">&lt;-</span> <span class="st">"grey"</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  milo.da_res[milo.da_res<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">1</span>, ]<span class="sc">$</span>color <span class="ot">&lt;-</span> <span class="st">"#F76D5E"</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  milo.da_res[milo.da_res<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">1</span>, ]<span class="sc">$</span>color <span class="ot">&lt;-</span> <span class="st">"#3FA0FF"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  diffcyt.da_res<span class="sc">$</span>meta10 <span class="ot">&lt;-</span> diffcyt.da_res<span class="sc">$</span>cluster_id</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(milo.da_res, <span class="fu">aes</span>(<span class="at">x=</span>meta10, <span class="at">y =</span> logFC, <span class="at">color=</span>milo.da_res<span class="sc">$</span>color)) <span class="sc">+</span> <span class="fu">geom_quasirandom</span>(<span class="at">alpha=</span>.<span class="dv">3</span>,<span class="at">varwidth=</span><span class="cn">TRUE</span>) <span class="sc">+</span>  <span class="fu">stat_summary</span>(<span class="at">fun.y=</span>mean, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">8</span>, <span class="at">size=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">data=</span><span class="fu">data.frame</span>(diffcyt.da_res), <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>meta10, <span class="at">y=</span>logFC), <span class="at">pch=</span><span class="dv">16</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">scale_colour_identity</span>() <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="dv">1</span>,<span class="at">linetype=</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_hline</span>(<span class="at">yintercept=</span> <span class="sc">-</span><span class="dv">1</span>,<span class="at">linetype=</span><span class="dv">2</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#+ geom_point(data=data.frame(diffcyt.da_res), mapping = aes(x=merging1, y=logFC))</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot.logFC</span>(milo.da_res[[<span class="dv">1</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">1</span>]]<span class="sc">$</span>res))</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plot.logFC</span>(milo.da_res[[<span class="dv">2</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">2</span>]]<span class="sc">$</span>res))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">plot.logFC</span>(milo.da_res[[<span class="dv">3</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">3</span>]]<span class="sc">$</span>res))</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>p3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Comparison by P-value</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-8_197278ad92d23780232f6442953314b8">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plot.PValue <span class="ot">&lt;-</span> <span class="cf">function</span>(milo.da_res, diffcyt.da_res){</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  diffcyt.da_res<span class="sc">$</span>meta10 <span class="ot">&lt;-</span> diffcyt.da_res<span class="sc">$</span>cluster_id</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  milo.da_res<span class="sc">$</span>logPValue <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(milo.da_res<span class="sc">$</span>PValue)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  diffcyt.da_res<span class="sc">$</span>logPValue <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(diffcyt.da_res<span class="sc">$</span>p_adj)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(milo.da_res, <span class="fu">aes</span>(<span class="at">x=</span>meta10, <span class="at">y=</span>logPValue, <span class="at">color=</span>meta10)) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim=</span><span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.y=</span>mean, <span class="at">geom=</span><span class="st">"point"</span>, <span class="at">shape=</span><span class="dv">23</span>, <span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">data=</span><span class="fu">data.frame</span>(diffcyt.da_res), <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>meta10, <span class="at">y=</span>logPValue))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot.PValue</span>(milo.da_res[[<span class="dv">1</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">1</span>]]<span class="sc">$</span>res))</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plot.PValue</span>(milo.da_res[[<span class="dv">2</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">2</span>]]<span class="sc">$</span>res))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">plot.PValue</span>(milo.da_res[[<span class="dv">3</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">3</span>]]<span class="sc">$</span>res))</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>p3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Plot p-value distribution</p>
+<div class="cell" data-hash="03_comparsion_milo_cache/html/unnamed-chunk-9_149154c90c0bb9d930438e3ebfdadb6f">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using Small multiple</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>plot.PValue_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(milo.da_res, diffcyt.da_res){</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  milo.da_res<span class="sc">$</span>logPValue <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(milo.da_res<span class="sc">$</span>PValue)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  da_res <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(diffcyt.da_res)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  da_res<span class="sc">$</span>logPValue <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(da_res<span class="sc">$</span>p_adj)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  da_res<span class="sc">$</span>meta10 <span class="ot">&lt;-</span> da_res<span class="sc">$</span>cluster_id</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>milo.da_res, <span class="fu">aes</span>(<span class="at">x=</span>logPValue, <span class="at">group=</span>meta10, <span class="at">fill=</span>meta10)) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_density</span>(<span class="at">adjust=</span><span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">facet_wrap</span>(<span class="sc">~</span>meta10) <span class="sc">+</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_vline</span>(<span class="at">data =</span> da_res, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">xintercept =</span> logPValue, <span class="at">group=</span>meta10), <span class="at">linetype=</span><span class="st">"dashed"</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span><span class="fu">log</span>(<span class="fl">0.05</span>), <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"none"</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.spacing =</span> <span class="fu">unit</span>(<span class="fl">0.1</span>, <span class="st">"lines"</span>),</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x=</span><span class="fu">element_blank</span>() </span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>      ) </span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">plot.PValue_dist</span>(milo.da_res[[<span class="dv">1</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">1</span>]]<span class="sc">$</span>res))</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">plot.PValue_dist</span>(milo.da_res[[<span class="dv">2</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">2</span>]]<span class="sc">$</span>res))</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">plot.PValue_dist</span>(milo.da_res[[<span class="dv">3</span>]], <span class="fu">rowData</span>(diffcyt.da_res[[<span class="dv">3</span>]]<span class="sc">$</span>res))</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_comparsion_milo_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

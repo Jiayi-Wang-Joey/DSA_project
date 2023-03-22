@@ -1,0 +1,47 @@
+---
+title: "00_Data"
+format: html
+editor: visual
+---
+
+```{r}
+library(CATALYST)
+library(cowplot)
+library(flowCore)
+library(diffcyt)
+library(scater)
+library(SingleCellExperiment)
+```
+
+```{r}
+library(readxl)
+url <- "http://imlspenticton.uzh.ch/robinson_lab/cytofWorkflow"
+md <- "PBMC8_metadata.xlsx"
+download.file(file.path(url, md), destfile = md, mode = "wb")
+md <- read_excel(md)
+head(data.frame(md))
+```
+
+```{r}
+library(HDCytoData)
+fs <- Bodenmiller_BCR_XL_flowSet()
+```
+
+```{r}
+panel <- "PBMC8_panel_v3.xlsx"
+download.file(file.path(url, panel), destfile = panel, mode = "wb")
+panel <- read_excel(panel)
+head(data.frame(panel))
+all(panel$fcs_colname %in% colnames(fs))
+```
+
+```{r}
+library(flowCore)
+library(CATALYST)
+md$condition <- factor(md$condition, levels = c("Ref", "BCRXL"))
+md$sample_id <- factor(md$sample_id, 
+    levels = md$sample_id[order(md$condition)])
+data(PBMC_fs, PBMC_panel, PBMC_md)
+# construct SingleCellExperiment
+sce <- prepData(fs, panel, md, features = panel$fcs_colname)
+```
